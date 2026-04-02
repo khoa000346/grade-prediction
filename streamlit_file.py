@@ -1,3 +1,4 @@
+import mapie
 import joblib
 import numpy as np
 import streamlit as st
@@ -37,10 +38,11 @@ else:
             model_index = current_semester - 1
             model = model_list[model_index]
 
-            predicted_gpa = model.predict(input_data)[0]
+            predicted_gpa, interval = model.predict_interval(input_data)
+            interval = interval.squeeze()
 
             st.subheader(f"📘 Predicted GPA – Semester {current_semester + 1}")
-            st.success(f"Predicted GPA: {predicted_gpa:.2f}")
+            st.success(f"Predicted GPA range: {interval[0]:.2f} – {interval[1]:.2f}")
         else:
             st.info("You are already at the final semester.")
 
